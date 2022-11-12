@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\LabelController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -47,7 +48,10 @@ Route::get('/categories/x', function () {
 Route::get('/', function () {
     return redirect()->route('items.index');
 });
-
+Route::get('/home', function () {
+    return redirect()->route('items.index');
+});
+Route::resource('labels', LabelController::class);
 Route::resource('items', ItemController::class);
 // -----------------------------------------
 

@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@szerveroldali.hu',
             'email_verified_at' => now(),
-            'password' => bcrypt('adminpwd'),
+            'password' => '$2a$10$td3ygw5k.8sUIk.uVKF0R.21qNAoX8OyXmNCU4kwKqqk7PAWhtGl6',//admin
+            'is_admin' => true,
             'remember_token' => Str::random(10),
           ]);
 

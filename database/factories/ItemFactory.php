@@ -20,7 +20,7 @@ class ItemFactory extends Factory
             "name"=> fake()->sentence(1,true),
             "description"=> fake()->paragraph(15,true),
             "obtained"=> fake()->dateTime(),
-            "image"=> fake()->imageUrl(640, 480, 'animals', true)
+           // "image"=> fake()->imageUrl(640, 480, 'animals', true)
         ];
     }
 }

@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/css/bootstrap-colorpicker.min.css" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -95,7 +96,9 @@
                 </div>
             </div>
         </footer>
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
+        @yield('javascript')
         @yield('scripts')
     </div>
 </body>

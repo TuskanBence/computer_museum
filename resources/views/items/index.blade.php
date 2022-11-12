@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Posts')
+@section('title', 'Items')
 
 @section('content')
     <div class="container">
@@ -11,11 +11,11 @@
                 <div class="float-lg-end">
                     {{-- TODO: Links, policy --}}
 
-                    <a href="#" role="button" class="btn btn-sm btn-success mb-1"><i class="fas fa-plus-circle"></i>
-                        Create post</a>
+                    <a href="{{ route('items.create') }}" role="button" class="btn btn-sm btn-success mb-1"><i
+                            class="fas fa-plus-circle"></i> Create Item</a>
+                    <a href="{{ route('labels.create') }}" role="button" class="btn btn-sm btn-success mb-1"><i
+                            class="fas fa-plus-circle"></i> Create Label</a>
 
-                    <a href="#" role="button" class="btn btn-sm btn-success mb-1"><i class="fas fa-plus-circle"></i>
-                        Create category</a>
 
                 </div>
             </div>
@@ -31,7 +31,7 @@
                     @forelse ($items as $item)
                         <div class="col-12 col-md-6 col-lg-6 mb-3 d-flex align-self-stretch">
                             <div class="card w-100">
-                                <img src="{{ asset($item->image) }}" class="card-img-top" alt="Post cover">
+                                <img src="{{ asset( isset($item->image) ? 'storage/'.$item->image : 'images/default_post_cover.jpg') }}" class="card-img-top" alt="Post cover">
                                 <div class="card-body">
                                     {{-- TODO: Title --}}
                                     <h5 class="card-title mb-0">{{ $item->name }}</h5>
@@ -43,17 +43,17 @@
                                         </span>
                                     </p>
                                     @foreach ($item->labels as $label)
-                                    <a class="text-decoration-none">
-                                        <span
-                                            style="color:white;background-color:{{ $label->color }};">{{ $label->name }}</span>
-                                    </a>
-                                 @endforeach
+                                         <a href="{{ route('labels.show', $label) }}" class="text-decoration-none">
+                                            <span
+                                                style="color:white;background-color:{{ $label->color }};">{{ $label->name }}</span>
+                                        </a>
+                                    @endforeach
                                     {{-- TODO: Short desc --}}
 
-                                    <p class="card-text mt-1">{{  Str::limit($item->description,50) }}</p>
+                                    <p class="card-text mt-1">{{ Str::limit($item->description, 50) }}</p>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="{{ route('items.show',$item) }}" class="btn btn-primary">
+                                    <a href="{{ route('items.show', $item) }}" class="btn btn-primary">
                                         <span>View post</span> <i class="fas fa-angle-right"></i>
                                     </a>
                                 </div>
@@ -83,7 +83,7 @@
                             <div class="card-body">
                                 {{-- TODO: Read categories from DB --}}
                                 @foreach ($labels as $label)
-                                    <a href="#" class="text-decoration-none">
+                                    <a href="{{ route('labels.show', $label) }}" class="text-decoration-none">
                                         <span
                                             style="color:white;background-color:{{ $label->color }};">{{ $label->name }}</span>
                                     </a>

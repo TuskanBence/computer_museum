@@ -10,16 +10,16 @@
         <div class="row justify-content-between">
             <div class="col-12 col-md-8">
                 {{-- TODO: Title --}}
-                <h1>{{ $item[0]->name }}</h1>
+                <h1>{{ $item->name }}</h1>
                 <p class="small text-secondary mb-0">
                     <i class="far fa-calendar-alt"></i>
                     {{-- TODO: Date --}}
-                    <span>{{ $item[0]->obtained }}</span>
+                    <span>{{ $item->obtained }}</span>
                 </p>
 
                 <div class="mb-2">
                     {{-- TODO: Read post categories from DB --}}
-                    @foreach ($item[0]->labels as $label)
+                    @foreach ($item->labels as $label)
                         @if ($label->display == true)
                             <a href="{{ route('items.index') }}" class="text-decoration-none">
                                 <span style="color:white;background-color:{{ $label->color }};">{{ $label->name }}</span>
@@ -29,17 +29,17 @@
                 </div>
 
                 {{-- TODO: Link --}}
-                <a href="#"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
+                <a href="{{route("items.index")}}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
 
             </div>
 
             <div class="col-12 col-md-4">
                 <div class="float-lg-end">
 
-                    {{-- TODO: Links, policy --}}
+                    @can('update',$item)
                     <a role="button" class="btn btn-sm btn-primary" href="#"><i class="far fa-edit"></i> Edit
                         post</a>
-
+                    @endcan
                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm-modal"><i
                             class="far fa-trash-alt">
                             <span></i> Delete post</span>
@@ -78,13 +78,15 @@
             </div>
         </div>
 
-        <img id="cover_preview_image" src="{{ asset($item[0]->image) }}" alt="Cover preview" class="my-3">
+        <img src="{{ asset( isset($item->image) ? 'storage/'.$item->image : 'images/default_post_cover.jpg') }}"
+        class="card-img-top"
+        alt="Post cover">
 
         <div class="mt-3">
-            <p>{{ $item[0]->description }}</p>
+            <p>{{ $item->description }}</p>
         </div>
         <div class="mt-3 border border-warning">
-            @forelse ( $item[0]->comments as $comment)
+            @forelse ( $item->comments as $comment)
             <div class="border border-bottom">
                 <b>Author: {{ $comment->user->name }}</b>
                 <p>{{ $comment->text }}</p>
