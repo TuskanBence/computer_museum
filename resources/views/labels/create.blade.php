@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Create category</h1>
+        <h1>Create label</h1>
         <div class="mb-4">
             {{-- TODO: Link --}}
             <a href="{{ route('items.index') }}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
@@ -11,7 +11,7 @@
 
         @if (Session::has('label_created'))
             <div class="alert alert-success">
-                Sikeresen létrehoztad a kategóriát:
+               You succesfuly created a new label:
                 <span style="color:white;background-color:{{ session('color') }};">{{ session('name') }}</span>
             </div>
         @endif

@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Create post</h1>
+    <h1>Create item</h1>
     <div class="mb-4">
         {{-- TODO: Link --}}
         <a href="{{route('items.index')}}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
@@ -11,22 +11,13 @@
 
     @if (Session::has('item_created'))
     <div class="alert alert-success">
-        Sikeresen létrehoztad a postot az alábbi címmel: {{ session()->get('item_created')}}
+       You succesfuly created a new item {{ session()->get('item_created')}}
     </div>
 
     @endif
-
-    @guest
-        <h2>Kérlek jelentkezz be a funkció használatához</h2>
-    @endguest
-
     @auth
-        {{-- TODO: action, method, enctype --}}
         <form method="POST" action="{{ route('items.store') }}" enctype="multipart/form-data">
             @csrf
-
-            {{-- TODO: Validation --}}
-
             <div class="form-group row mb-3">
                 <label for="title" class="col-sm-2 col-form-label">Name*</label>
                 <div class="col-sm-10">
@@ -36,16 +27,6 @@
                     @enderror
                 </div>
             </div>
-
-            {{--
-                Handling invalid input fields:
-
-                <input type="text" class="form-control is-invalid" ...>
-                <div class="invalid-feedback">
-                    Message
-                </div>
-            --}}
-
             <div class="form-group row mb-3">
                 <label for="text" class="col-sm-2 col-form-label">Description*</label>
                 <div class="col-sm-10">
@@ -67,7 +48,6 @@
             <div class="form-group row mb-3">
                 <label for="label" class="col-sm-2 col-form-label py-0">Labels</label>
                 <div class="col-sm-10">
-                    {{-- TODO: Read post categories from DB --}}
                     @forelse ($labels as $label)
                         <div class="form-check">
                             <input
@@ -77,15 +57,13 @@
                                 id="label{{ $label->id }}"
                                 @checked( in_array($label->id,old('labels',[])))
                                 name="labels[]"
-                                {{-- TODO: name, checked --}}
                             >
-                            {{-- TODO --}}
                             <label for="label{{ $label->id }}" class="form-check-label">
                                 <span style="color:white;background-color:{{ $label->color }};">{{ $label->name }}</span>
                             </label>
                         </div>
                     @empty
-                        <p>No labes found</p>
+                        <p>No labels found</p>
                     @endforelse
                 </div>
             </div>

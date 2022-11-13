@@ -12,10 +12,10 @@
                 <div class="col-12 col-md-4">
                     <div class="float-lg-end">
                         <a href="{{ route('labels.edit', $label) }}" role="button" class="btn btn-sm btn-primary">
-                            <i class="far fa-edit"></i> Edit category
+                            <i class="far fa-edit"></i> Edit Label
                         </a>
                         <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm-modal">
-                            <i class="far fa-trash-alt"></i> Delete category
+                            <i class="far fa-trash-alt"></i> Delete Label
                         </button>
                     </div>
                 </div>
@@ -41,10 +41,10 @@
                                     <p class="card-text mt-1">{{ Str::limit($item->description, 50) }}</p>
                                 </div>
                                 <div class="card-footer">
-                                    @foreach ($item->labels as $label)
-                                        <a href="{{ route('labels.show', $label) }}" class="text-decoration-none">
+                                    @foreach ($item->labels as $llabel)
+                                        <a href="{{ route('labels.show', $llabel) }}" class="text-decoration-none">
                                             <span
-                                                style="color:white;background-color:{{ $label->color }};">{{ $label->name }}</span>
+                                                style="color:white;background-color:{{ $llabel->color }};">{{ $llabel->name }}</span>
                                         </a>
                                     @endforeach
                                     <a href="{{ route('items.show', $item) }}" class="btn btn-primary">
@@ -72,14 +72,14 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                Are you sure you want to delete category <span
+                                Are you sure you want to delete label <span
                                     style="color:white;background-color:{{ $label->color }};">{{ $label->name }}</span>?
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                                 <button type="button" class="btn btn-danger"
                                     onclick="document.getElementById('delete-label-form').submit();">
-                                    Yes, delete this category
+                                    Yes, delete this label
                                 </button>
                                 <form id="delete-label-form" action="{{ route('labels.destroy', $label) }}" method="POST"
                                     class="d-none">

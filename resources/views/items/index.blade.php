@@ -52,7 +52,7 @@
                                         </a>
                                     @endforeach
                                     <a href="{{ route('items.show', $item) }}" class="btn btn-primary">
-                                        <span>View post</span> <i class="fas fa-angle-right"></i>
+                                        <span>View item</span> <i class="fas fa-angle-right"></i>
                                     </a>
                                 </div>
                             </div>

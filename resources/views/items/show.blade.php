@@ -5,12 +5,12 @@
     <div class="container">
         @if (Session::has('comment_created'))
             <div class="alert alert-success">
-                Sikeresen commenteltél
+               You succesfuly commented
             </div>
         @endif
         @if (Session::has('comment_deleted'))
             <div class="alert alert-success">
-                Sikeresen törölted a commentet
+                You succesfuly deleted your comment
             </div>
         @endif
         <div class="row justify-content-between">
@@ -38,11 +38,11 @@
                     @can('update', $item)
                         <a role="button" class="btn btn-sm btn-primary" href="{{ route('items.edit', $item) }}"><i
                                 class="far fa-edit"></i> Edit
-                            post</a>
+                            item</a>
                     @endcan
                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm-modal"><i
                             class="far fa-trash-alt">
-                            <span></i> Delete post</span>
+                            <span></i> Delete item</span>
                     </button>
 
                 </div>
@@ -59,13 +59,13 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to delete post <strong>{{ $item->name }}</strong>?
+                        Are you sure you want to delete item <strong>{{ $item->name }}</strong>?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="button" class="btn btn-danger"
                             onclick="document.getElementById('delete-item-form').submit();">
-                            Yes, delete this post
+                            Yes, delete this item
                         </button>
                         <form id="delete-item-form" action="{{ route('items.destroy', $item) }}" method="POST"
                             class="d-none">
@@ -92,6 +92,7 @@
                         onclick="document.getElementById('delete-comment-form').submit();">
                         Delete
                     </button>
+                    <span>{{ $comment->created_at }}</span>
                     <p>{{ $comment->text }}</p>
                     <form id="delete-comment-form" action="{{ route('comments.destroy', $comment) }}" method="POST"
                         class="d-none">
