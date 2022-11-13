@@ -65,7 +65,7 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
-        return $user->is_admin;
+        return $user->is_admin or $comment->user->id==$user->id;
     }
 
     /**

@@ -55,7 +55,6 @@ class CommentController extends Controller
         $comment = Comment::factory()->create([
             'text' => $validated['text'],
         ]);
-        $input = $request->all();
         $comment->item()->associate($validated['item_id'])->save();
         $comment->user()->associate($validated['user_id'])->save();
         Session::flash('comment_created');
