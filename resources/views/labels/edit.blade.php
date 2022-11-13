@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="container">
-        <h1>Create category</h1>
+        <h1>Edit label</h1>
         <div class="mb-4">
             {{-- TODO: Link --}}
             <a href="{{ route('labels.show',$label) }}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>

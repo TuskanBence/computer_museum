@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Create post</h1>
+    <h1>Edit item</h1>
     <div class="mb-4">
         {{-- TODO: Link --}}
         <a href="{{route('items.index')}}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>

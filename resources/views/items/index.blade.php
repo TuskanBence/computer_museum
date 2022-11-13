@@ -39,8 +39,10 @@
                                         <span>{{ $item->obtained }}</span>
                                     </span>
                                 </p>
+                                <a href="{{route('items.show',$item)}}">
                                 <img src="{{ asset(isset($item->image) ? 'storage/' . $item->image : 'images/default_post_cover.jpg') }}"
                                     class="card-img-top" alt="Post cover">
+                                </a>
                                 <div class="card-body">
                                     <p class="card-text mt-1">{{ Str::limit($item->description, 50) }}</p>
                                 </div>
