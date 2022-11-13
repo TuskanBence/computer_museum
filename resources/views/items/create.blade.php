@@ -55,7 +55,15 @@
                     @enderror
                 </div>
             </div>
-
+            <div class="form-group row mb-3">
+                <label for="obtain" class="col-sm-2 col-form-label">Obtained*</label>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control @error('obtained') is-invalid @enderror" id="obtained" name="obtained" value="{{ old('obtained') }}">
+                    @error('obtained')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+            </div>
             <div class="form-group row mb-3">
                 <label for="label" class="col-sm-2 col-form-label py-0">Labels</label>
                 <div class="col-sm-10">

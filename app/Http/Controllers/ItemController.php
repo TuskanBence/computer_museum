@@ -56,6 +56,7 @@ class ItemController extends Controller
             [
                 'name' => 'required|max:255',
                 'description' => 'required',
+                'obtained' => 'required',
                 'labels' => 'nullable|array',
                 'labels.*' => 'numeric|integer|exists:labels,id',
                 'image' => 'file|mimes:jpg,png|max:1024'
@@ -64,6 +65,7 @@ class ItemController extends Controller
                 'required' => 'A mező megadása kötelező',
                 'name.required' => 'A név megadása kötelezö',
                 'description.required' => 'Leirás megadása kötelezö',
+                'obtained.required' => 'Megszerzés dátuma kötelezö',
 
             ]
         );
@@ -80,7 +82,7 @@ class ItemController extends Controller
             'name' => $validated['name'],
             'description' => $validated['description'],
             'image' => $image_path,
-            'obtained'=>now()
+            'obtained'=>$validated['obtained'],
         ]);
         isset($validated['labels']) ?
         $item->labels()->sync($validated['labels']) : "";
@@ -112,7 +114,7 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
-        //
+        return view('items.edit',['item'=>$item,'labels' => Label::all(),]);
     }
 
     /**
@@ -124,7 +126,49 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
-        //
+        $validated = $request->validate(
+            [
+                'name' => 'nullable|max:255',
+                'description' => 'nullable',
+                'obtained' => 'nullable',
+                'labels' => 'nullable|array',
+                'labels.*' => 'numeric|integer|exists:labels,id',
+                'image' => 'file|mimes:jpg,png|max:1024'
+            ],
+            [
+                'required' => 'A mező megadása kötelező',
+                'name.required' => 'A név megadása kötelezö',
+                'description.required' => 'Leirás megadása kötelezö',
+
+            ]
+        );
+        $image_path = '';
+        if($request->hasFile('image')){
+            $file = $request->file('image');
+            $image_path = 'image_'.Str::random(16).'.'.$file->getClientOriginalExtension();
+            Storage::disk('public')->put($image_path,$file->get());
+        }
+        else{
+            $image_path =$item->image;
+        }
+        $name = isset($validated['name'])? $validated['name'] : $item->name;
+        $description = isset($validated['description'])? $validated['description'] : $item->description;
+        $obtained = isset($validated['obtained'])? $validated['obtained'] : $item->obtained;
+        Item::where('id', $item->id)
+            ->update(
+                [
+                    'name' => $name,
+                    'description' => $description,
+                    'image'=> $image_path,
+                    'obtained'=>$obtained,
+                ]
+            );
+        $labels= isset($validated['labels']) ? $validated['labels'] : $item->labels;
+        $item->labels()->sync($labels);
+        Session::flash('item_created',$validated['name']);
+        // Session::flash('name',$validated['name']);
+        // Session::flash('style',$validated['style']);
+        return redirect()->route('items.index');
     }
 
     /**

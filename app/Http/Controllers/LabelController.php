@@ -57,7 +57,7 @@ class LabelController extends Controller
             [
                 'color' => 'required',
                 'name' => 'required|max:30',
-                'dispaly' => 'nullable'
+                'display'=>'nullable',
             ],
             [
                 'required' => 'A mező megadása kötelező',
@@ -65,7 +65,15 @@ class LabelController extends Controller
                 'name.required' => 'A név megadása kötelezö'
             ]
         );
-        Label::factory()->create($validated);
+        $display=false;
+        if( $request->has('display') ){
+            $display=true;
+        }
+        Label::factory()->create([
+            'name' => $validated['name'],
+            'color' => $validated['color'],
+            'display'=> $display,
+        ]);
         Session::flash('label_created');
         Session::flash('name', $validated['name']);
         Session::flash('color', $validated['color']);
@@ -82,7 +90,7 @@ class LabelController extends Controller
     {
         return view('labels.show', [
             'label' => $label,
-            'items' => Label::where('id', $label->id)->get()[0]->items
+            'items' => Label::where('id', $label->id)->get()[0]->items->sortByDesc('obtained'),
         ]);
     }
 
@@ -108,35 +116,37 @@ class LabelController extends Controller
     {
         $this->validate($request, [
             'color' => [
-                'required',
+                'nullable',
                 "regex:/^#(?:[0-9a-fA-F]{3}){1,2}$/"
             ],
         ]);
         $validated = $request->validate(
             [
-                'color' => 'required',
-                'name' => 'required|max:30',
-                'display' => 'nullable'
+                'color' => 'nullable',
+                'name' => 'nullable|max:30',
+                'display'=>'nullable',
             ],
             [
                 'required' => 'A mező megadása kötelező',
                 'color.required' => 'A szin megadása kötelezö',
                 'name.required' => 'A név megadása kötelezö'
-
             ]
         );
-        Label::where('id', $label->id)
+        $name = isset($validated['name'])? $validated['name'] : $label->name;
+        $color = isset($validated['color'])? $validated['color'] : $label->color;
+        $display = isset($validated['display'])? $validated['display'] : $label->display;
+       Label::where('id', $label->id)
             ->update(
                 [
-                    'name' => $validated['name'],
-                    'color' => $validated['color'],
-                    'display' => $validated['display']
+                    'name' => $name,
+                    'color' => $color,
+                    'display'=> $display,
                 ]
             );
-        Session::flash('label_created');
+        Session::flash('label_edited');
         Session::flash('name', $validated['name']);
         Session::flash('color', $validated['color']);
-        return redirect()->route('labels.edit');
+        return redirect()->route('labels.show',$label);
     }
 
     /**

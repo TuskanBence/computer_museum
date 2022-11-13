@@ -19,7 +19,7 @@ class ItemFactory extends Factory
         return [
             "name"=> fake()->sentence(1,true),
             "description"=> fake()->paragraph(15,true),
-            "obtained"=> fake()->dateTime(),
+            "obtained"=> fake()->dateTime()->format("Y-m-d"),
            // "image"=> fake()->imageUrl(640, 480, 'animals', true)
         ];
     }

@@ -18,13 +18,14 @@
 
 
         <h1>Original label: <span style="color:white;background-color:{{ $label->color }};">{{ $label->name }}</span></h1>
-        <form method="PUT" action="{{ route('labels.update',$label) }}" enctype="multipart/form-data">
+        <form method="POST" action="{{ route('labels.update',$label) }}" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="form-group row mb-3">
                 <label for="name" class="col-sm-2 col-form-label">Name*</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
-                        name="name" value="{{ old('name') }}">
+                        name="name" value="{{old('name') ? old('name') : $label->name}}">
                     @error('name')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -35,7 +36,7 @@
                 <label for="name" class="col-sm-2 col-form-label">Color*</label>
                 <div class="col-sm-10">
                     <input type="text" class="form-control @error('color') is-invalid @enderror" id="color"
-                        name="color" value="{{ old('color') }}">
+                        name="color" value="{{old('color') ? old('color') : $label->color}}">
                     @error('color')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror

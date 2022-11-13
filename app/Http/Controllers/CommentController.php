@@ -39,7 +39,7 @@ class CommentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,User $user,Item $item)
+    public function store(Request $request)
     {
 
         $validated = $request->validate(
@@ -105,6 +105,10 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        //
+        $this->authorize('delete',$comment);
+        Session::flash('comment_deleted');
+        Session::flash('name', $comment->user->name);
+        $comment->delete();
+        return redirect()->route('items.show',$comment->item);
     }
 }

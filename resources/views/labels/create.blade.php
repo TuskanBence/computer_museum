@@ -46,7 +46,8 @@
                     <label for="name" class="col-sm-2 col-form-label">Do you want to display it?</label>
                     <div class="col-sm-10">
                         <input type="checkbox" class="form-check-input @error('display') is-invalid @enderror"
-                            id="display" name="display" @checked(old('display')) value="checked">
+                            id="display" name="display"
+                            value="{{old('display')}}">
                         @error('display')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

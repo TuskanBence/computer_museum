@@ -1,47 +1,43 @@
 @extends('layouts.app')
-{{-- TODO: Post title --}}
-@section('title', 'View post: ')
+@section('title', 'View item: ')
 
 @section('content')
     <div class="container">
-
-        {{-- TODO: Session flashes --}}
         @if (Session::has('comment_created'))
             <div class="alert alert-success">
                 Sikeresen commenteltél
             </div>
         @endif
+        @if (Session::has('comment_deleted'))
+            <div class="alert alert-success">
+                Sikeresen törölted a commentet
+            </div>
+        @endif
         <div class="row justify-content-between">
             <div class="col-12 col-md-8">
-                {{-- TODO: Title --}}
                 <h1>{{ $item->name }}</h1>
                 <p class="small text-secondary mb-0">
                     <i class="far fa-calendar-alt"></i>
-                    {{-- TODO: Date --}}
                     <span>{{ $item->obtained }}</span>
                 </p>
 
                 <div class="mb-2">
-                    {{-- TODO: Read post categories from DB --}}
                     @foreach ($item->labels as $label)
                         @if ($label->display == true)
-                            <a href="{{ route('items.index') }}" class="text-decoration-none">
+                            <a href="{{ route('labels.show',$label) }}" class="text-decoration-none">
                                 <span style="color:white;background-color:{{ $label->color }};">{{ $label->name }}</span>
                             </a>
                         @endif
                     @endforeach
                 </div>
-
-                {{-- TODO: Link --}}
                 <a href="{{ route('items.index') }}"><i class="fas fa-long-arrow-alt-left"></i> Back to the homepage</a>
-
             </div>
-
             <div class="col-12 col-md-4">
                 <div class="float-lg-end">
 
                     @can('update', $item)
-                        <a role="button" class="btn btn-sm btn-primary" href="#"><i class="far fa-edit"></i> Edit
+                        <a role="button" class="btn btn-sm btn-primary" href="{{ route('items.edit', $item) }}"><i
+                                class="far fa-edit"></i> Edit
                             post</a>
                     @endcan
                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#delete-confirm-modal"><i
@@ -63,8 +59,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        {{-- TODO: Title --}}
-                        Are you sure you want to delete post <strong>{{$item->name}}</strong>?
+                        Are you sure you want to delete post <strong>{{ $item->name }}</strong>?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -72,9 +67,8 @@
                             onclick="document.getElementById('delete-item-form').submit();">
                             Yes, delete this post
                         </button>
-
-                        {{-- TODO: Route, directives --}}
-                        <form id="delete-item-form" action="{{route('items.destroy',$item)}}" method="POST" class="d-none">
+                        <form id="delete-item-form" action="{{ route('items.destroy', $item) }}" method="POST"
+                            class="d-none">
                             @method('DELETE')
                             @csrf
                         </form>
@@ -86,14 +80,24 @@
         <img src="{{ asset(isset($item->image) ? 'storage/' . $item->image : 'images/default_post_cover.jpg') }}"
             class="card-img-top" alt="Post cover">
 
-        <div class="mt-3">
-            <p>{{ $item->description }}</p>
+        <div class="mt-3 border border-secondary">
+            <h4>Item's description: </h4><p>{{ $item->description }}</p>
         </div>
         <div class="mt-3 border border-warning">
             @forelse ($comments as $comment)
                 <div class="border border-bottom">
                     <b>Author: {{ $comment->user->name }}</b>
+                    <span><a href='#'>Edit</a></span>
+                    <button type="button" class="btn btn-danger"
+                        onclick="document.getElementById('delete-comment-form').submit();">
+                        Delete
+                    </button>
                     <p>{{ $comment->text }}</p>
+                    <form id="delete-comment-form" action="{{ route('comments.destroy', $comment) }}" method="POST"
+                        class="d-none">
+                        @method('DELETE')
+                        @csrf
+                    </form>
                 </div>
             @empty
                 <div class="alert alert-warning" role="alert">
@@ -103,7 +107,7 @@
             <form method="POST" action="{{ route('comments.store') }}">
                 @csrf
                 <div class="form-group row mb-3">
-                    <label for="text" class="col-sm-2 col-form-label">text*</label>
+                    <label for="text" class="col-sm-2 col-form-label">Comment</label>
                     <div class="col-sm-10">
                         <textarea rows="5" class="form-control @error('text') is-invalid @enderror" id="text" name="text">{{ old('text') }}</textarea>
                         @error('text')
